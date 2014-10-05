@@ -7,9 +7,7 @@ GUI for [Rbitcoin](https://github.com/jangorecki/Rbitcoin) package using shiny a
 ## Installation & Usage
 
 ```R
-library(devtools)
-
-# dependency, install (update) if you are missing any:
+# dependency, install (update) if you miss any:
 install.packages("devtools")
 install.packages("data.table")
 install.packages("shiny")
