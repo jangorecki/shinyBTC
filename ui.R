@@ -1,15 +1,8 @@
-stripDOCTYPE <- function(x){
-  unwanted_header <- "<p>&lt;!DOCTYPE html&gt;</p>\n\n"
-  if(nchar(x) <= nchar(unwanted_header)) return(x)
-  if(substr(x,1,30) == unwanted_header) return(substr(x,31,nchar(x)))
-  x
-}
-
 shinyUI(
   navbarPage(
     "shinyBTC",
     tabPanel("about",
-             stripDOCTYPE(includeMarkdown(about.md))),
+             includeHTML(about.html)),
     tabPanel("market API",
              fluidPage(
                sidebarLayout(
@@ -20,23 +13,39 @@ shinyUI(
                               p("req args:"),
                               uiOutput("Ireq"),
                               hr(),
-                              p("last API call by market (?antiddos):"),
-                              verbatimTextOutput("Olast_api_call"),
-                              hr(),
-                              actionButton("Iapi_call", label = "API call"),
-                              hr(),
-                              numericInput("Rbitcoin.verbose","Rbitcoin verbose:", value = 1L, min = 0L, max = 10L, step = 1L)
+                              #p("last API call by market (?antiddos):"),
+                              #verbatimTextOutput("Olast_api_call"),
+                              #hr(),
+                              actionButton("Iapi_call", label = "market API process (+plot)")
                  ),
                  mainPanel(
-                   htmlOutput("Omarket_api_result")
+                   wellPanel(
+                     plotOutput("Oplot_market_api_res"),
+                     hr(),
+                     dataTableOutput("Odt_market_api_res"),
+                     hr(),
+                     verbatimTextOutput("Ostr_market_api_res")
+                     )
                  )
-               )
+               ),
+               wellPanel(
+                 verbatimTextOutput("Oprint_market_api_res")
+                 )
              )),
     tabPanel("blockchain API",
              NULL),
     tabPanel("utils",
              NULL),
     tabPanel("options",
-             NULL)
+             fluidPage(
+               titlePanel("Rbitcoin options"),
+               fluidRow(
+                 column(2, numericInput("Rbitcoin.verbose","Rbitcoin verbose:", value = 1L, min = 0L, max = 10L, step = 1L)),
+                 column(2, numericInput("Rbitcoin.antiddos.verbose","Rbitcoin antiddos verbose:", value = 1L, min = 0L, max = 1L, step = 1L))
+                 ),
+               fluidRow(
+                 column(2, numericInput("Rbitcoin.antiddos.sec","Rbitcoin antiddos sec:", value = 10, min = 1, max = 60, step = 1)),
+                 column(2, checkboxInput("Rbitcoin.plot.mask","Rbitcoin plot mask:", value = FALSE))
+               )))
   )
 )

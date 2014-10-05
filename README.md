@@ -8,12 +8,12 @@ GUI for [Rbitcoin](https://github.com/jangorecki/Rbitcoin) package using shiny a
 
 ```R
 library(devtools)
+
 # install required packages
-install.packages("Rbitcoin")
+install.packages("data.table")
 install.packages("shiny")
-install_github("trestletech/shinyTree")
-install_github(c('rstudio/htmltools', 'ramnathv/htmlwidgets'))
-install_github("rstudio/dygraphs")
+install_github("jangorecki/Rbitcoin")
+
 # run shiny app
 runGitHub("jangorecki/shinyBTC")
 ```
