@@ -1,0 +1,31 @@
+---
+title: "shinyBTC"
+author: "Jan Gorecki"
+date: '2014-10-04'
+output: html_document
+---
+
+This app acts like a simple GUI for [Rbitcoin](https://github.com/jangorecki/Rbitcoin) package.
+
+Use it wise, be aware of [MIT](http://opensource.org/licenses/MIT) license on which this app is released.
+
+---
+
+List of available market + currency pairs (can be extended by user by setting options):
+```{r}
+unique(getOption("Rbitcoin.api.dict")[!is.na(base)],
+       by=c("market","base","quote")
+       )[,.(market, currency_pair = paste(base,quote,sep=""))]
+```
+
+Details of host:
+
+```{r}
+data.table(attribute = names(Sys.info()), value = Sys.info())
+```
+
+App start:
+
+```{r}
+Sys.time()
+```
