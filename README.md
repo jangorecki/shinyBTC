@@ -16,7 +16,7 @@ install.packages("shiny")
 install.packages("rmarkdown")
 devtools::install_github("jangorecki/Rbitcoin")
 
-# run shiny app
+# run shiny app - only RStudio IDE supported at the moment (rmarkdown pandoc error)!
 shiny::runGitHub("jangorecki/shinyBTC")
 ```
 

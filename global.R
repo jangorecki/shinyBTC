@@ -1,7 +1,9 @@
-library(data.table)
-library(Rbitcoin)
-library(shiny)
-library(rmarkdown)
+suppressPackageStartupMessages({
+  library(data.table)
+  library(Rbitcoin)
+  library(shiny)
+  library(rmarkdown)
+})
 
 about.html <- render("about.Rmd",quiet=TRUE)
 
