@@ -13,9 +13,9 @@ perform_call <- function(input){
   action <- input$Iaction
   # auth
   if(action %in% c('wallet','open_orders','place_limit_order','cancel_order')){
-    key <- input$Ikey
-    secret <- input$Isecret
-    client_id <- input$Iclient_id # bitstamp only
+    key <- input$Iapi_key
+    secret <- input$Iapi_secret
+    client_id <- input$Iapi_client_id # bitstamp only
   }
   
   # split "BTCUSD" to c("BTC","USD")
@@ -27,12 +27,12 @@ perform_call <- function(input){
     "ticker"= market.api.process(market, split_cp(currency_pair),action),
     "order_book" = market.api.process(market, split_cp(currency_pair),action),
     "wallet" = {
-      if(market=='bitstamp') market.api.process(market, action, key = key, secret = secret, client_id = client_id)
-      else market.api.process(market, action, key = key, secret = secret)
+      if(market=='bitstamp') market.api.process(market, action = action, key = key, secret = secret, client_id = client_id)
+      else market.api.process(market, action = action, key = key, secret = secret)
     },
     "open_orders" = {
-      if(market=='bitstamp') market.api.process(market, action, key = key, secret = secret, client_id = client_id)
-      else market.api.process(market, action, key = key, secret = secret)
+      if(market=='bitstamp') market.api.process(market, action = action, key = key, secret = secret, client_id = client_id)
+      else market.api.process(market, action = action, key = key, secret = secret)
     },
     "place_limit_order" = {
       if(is.null(input$Itype)) stop("missing 'type' param to place_limit_order action")
@@ -45,8 +45,8 @@ perform_call <- function(input){
     "cancel_order" = {
       if(input$Ioid=="") stop("missing 'oid' (order id) param to cancel_order action")
       req <- list(oid = input$Ioid)
-      if(market=='bitstamp') market.api.process(market, action, req = req, key = key, secret = secret, client_id = client_id)
-      else market.api.process(market, action, req = req, key = key, secret = secret)
+      if(market=='bitstamp') market.api.process(market, action = action, req = req, key = key, secret = secret, client_id = client_id)
+      else market.api.process(market, action = action, req = req, key = key, secret = secret)
     },
     "trades" = {
       if(input$Itid=="") market.api.process(market, split_cp(currency_pair), action)

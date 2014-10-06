@@ -1,4 +1,6 @@
 shinyBTC 0.1.1 (in dev)
 ==============
-* public market api process + print results (no plot yet)
+* market api plot: trades, order_book
+* print results: DataTables, str(), verbose log
+* market api process public and private calls
 * general framework

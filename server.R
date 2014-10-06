@@ -30,56 +30,44 @@ shinyServer(function(input, output, session){
     })
   }) # update Iaction
   
-  # last api call log TODO
-  output$Olast_api_call <- renderDataTable({
-    #get("Rbitcoin.last_api_call", envir = package:Rbitcoin)
-    # Rbitcoin.last_api_call
-    data.table(market = character(), timestamp = as.POSIXct(0, origin="1970-01-01")[-1])
-  })
-  
-  # dynamic input Iaction params
-  output$Ireq <- renderUI({
-    if(is.null(input$Imarket) | is.null(input$Iaction)) return()
-    switch(input$Iaction,
-           "place_limit_order" = list(selectInput("Itype", "type", as.list(c('buy','sell'))),
-                                      numericInput("Iprice", "price", value = NA, min = 0),
-                                      numericInput("Iamount", "amount", value = NA, min = 0)),
-           "cancel_order" = list(textInput("Ioid", "order id")),
-           "trades" = list(textInput("Itid", "last tid")))
-  })
-  
   # perform api call
   market_api_res <- reactive({
     validate(need(input$Iapi_call > 0, ""))
     isolate({
       action <- input$Iaction
+      #message("perform_call")
       invisible(perform_call(input = input))
     })
   })
   
   # render console log
   output$Oprint_market_api_res <- renderPrint({
-    validate(need(input$Iapi_call > 0, ""))
+    input$Iapi_call
     isolate({
+      validate(need(input$Iapi_call > 0, ""))
+      #message("renderPrintConsole")
       market_api_res()
       })
   })
-  
   # render plot result
   output$Oplot_market_api_res <- renderPlot({
-    validate(need(input$Iapi_call > 0, ""))
+    input$Iapi_call
     isolate({
-      validate(need(input$Iaction %in% c("order_book","trades","wallet"), ""))
-      #plot(market_api_res()) # TODO: https://github.com/jangorecki/Rbitcoin/issues/10
-      plot(1:10)
+      validate(need(input$Iapi_call > 0, ""))
+      validate(need(input$Iaction %in% c("order_book","trades"), "")) # ,"wallet" TODO
+      #message("renderPlot")
+      x <- market_api_res()
+      if(class(x)[1] %in% c("btc.trades","btc.order_book")) plot(x, verbose = 0) else invisible(NULL)
     })
   })
   # render data table result
   output$Odt_market_api_res <- renderDataTable({
-    validate(need(input$Iapi_call > 0, ""))
+    input$Iapi_call
     isolate({
+      validate(need(input$Iapi_call > 0, ""))
       validate(need(!(input$Iaction %in% c("order_book")), ""))
       action <- input$Iaction
+      #message("renderDataTable")
       if(action %in% c("trades","wallet","open_orders")){
         market_api_res()[[action]]
       }
@@ -90,8 +78,10 @@ shinyServer(function(input, output, session){
   }, options = list(pageLength = 5, lengthMenu = c(5,10,15,100)))
   # render verbatim str on market response
   output$Ostr_market_api_res <- renderPrint({
-    validate(need(input$Iapi_call > 0, ""))
+    input$Iapi_call
     isolate({
+      validate(need(input$Iapi_call > 0, ""))
+      #message("renderPrintStr")
       str(market_api_res())
     })
   })
@@ -106,5 +96,6 @@ shinyServer(function(input, output, session){
   setRbitcoinAntiddosVerbose <- observe(options(Rbitcoin.antiddos.verbose = input$Rbitcoin.antiddos.verbose))
   setRbitcoinAntiddosSec <- observe(options(Rbitcoin.antiddos.sec = input$Rbitcoin.antiddos.sec))
   setRbitcoinPlotMask <- observe(options(Rbitcoin.plot.mask = input$Rbitcoin.plot.mask))
+  setRbitcoinPlotLimitPct <- observe(options(Rbitcoin.plot.limit_pct = input$Rbitcoin.plot.limit_pct))
   
 })
