@@ -32,9 +32,11 @@ shinyUI(
                  ),
                  mainPanel(
                    wellPanel(
-                     plotOutput("Oplot_market_api_res"),
+                     conditionalPanel("input.Iaction == 'trades' || input.Iaction == 'order_book'",
+                                      plotOutput("Oplot_market_api_res")),
                      hr(),
-                     dataTableOutput("Odt_market_api_res"),
+                     conditionalPanel("input.Iaction != 'order_book'",
+                                      dataTableOutput("Odt_market_api_res")),
                      hr(),
                      verbatimTextOutput("Ostr_market_api_res")
                      )
@@ -45,9 +47,26 @@ shinyUI(
                  )
              )),
     tabPanel("blockchain API",
-             NULL),
-    tabPanel("utils",
-             NULL),
+             fluidPage(
+               sidebarLayout(
+                 sidebarPanel(width = 3,
+                              #numericInput("IfromtoBTC", "to BTC", value = NA, min = 0, step = 0.0001),
+                              #selectInput("IfromtoBTCcurrency", label = "currency", choices = c("USD"), selected = "USD"),
+                              #actionButton("Iblockchain_fromBTC", label = "from"),
+                              #actionButton("Iblockchain_toBTC", label = "to"),
+                              #hr(),
+                              textInput("Iblockchain_api_x", label = "address or tx", value = ""),
+                              actionButton("Iblockchain_api_call", label = "blockchain API process")
+                 ),
+                 mainPanel(
+                   wellPanel(
+                     dataTableOutput("Odt_blockchain_api_res"),
+                     hr(),
+                     verbatimTextOutput("Ostr_blockchain_api_res")
+                     )
+                   )
+               )
+             )),
     tabPanel("options",
              fluidPage(
                titlePanel("Rbitcoin options"),
@@ -57,7 +76,7 @@ shinyUI(
                  ),
                fluidRow(
                  column(2, numericInput("Rbitcoin.antiddos.sec","Rbitcoin antiddos sec:", value = 10, min = 1, max = 60, step = 1)),
-                 column(2, checkboxInput("Rbitcoin.plot.mask","Rbitcoin plot mask:", value = FALSE))
+                 column(2, checkboxInput("Rbitcoin.plot.mask","Rbitcoin plot mask:", value = FALSE)) # not yet utilized
                ),
                fluidRow(
                  column(2, numericInput("Rbitcoin.plot.limit_pct","Rbitcoin plot order book limit pct:", value = 0.75, min = 0, max = 10, step = 0.01)),

@@ -19,11 +19,14 @@ shiny::runGitHub("jangorecki/shinyBTC")
 
 # if you hit pandoc error you should update it, for example by copy from RStudio:
 #sudo cp /usr/lib/rstudio/bin/pandoc/* /usr/local/bin/
+
+# Rbitcoin introduction
+vignette("introduction", package="Rbitcoin")
 ```
 
 ## License
 
-[MIT license](https://github.com/jangorecki/shinyBTC/blob/master/LICENSE)
+[MIT license](http://opensource.org/licenses/MIT)
 
 ## Contact
 

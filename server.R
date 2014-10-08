@@ -35,7 +35,6 @@ shinyServer(function(input, output, session){
     validate(need(input$Iapi_call > 0, ""))
     isolate({
       action <- input$Iaction
-      #message("perform_call")
       invisible(perform_call(input = input))
     })
   })
@@ -45,7 +44,6 @@ shinyServer(function(input, output, session){
     input$Iapi_call
     isolate({
       validate(need(input$Iapi_call > 0, ""))
-      #message("renderPrintConsole")
       market_api_res()
       })
   })
@@ -54,10 +52,9 @@ shinyServer(function(input, output, session){
     input$Iapi_call
     isolate({
       validate(need(input$Iapi_call > 0, ""))
-      validate(need(input$Iaction %in% c("order_book","trades"), "")) # ,"wallet" TODO
-      #message("renderPlot")
+      validate(need(input$Iaction %in% c("order_book","trades"), ""))
       x <- market_api_res()
-      if(class(x)[1] %in% c("btc.trades","btc.order_book")) plot(x, verbose = 0) else invisible(NULL)
+      rbtc.plot(x, verbose = 0)
     })
   })
   # render data table result
@@ -67,7 +64,6 @@ shinyServer(function(input, output, session){
       validate(need(input$Iapi_call > 0, ""))
       validate(need(!(input$Iaction %in% c("order_book")), ""))
       action <- input$Iaction
-      #message("renderDataTable")
       if(action %in% c("trades","wallet","open_orders")){
         market_api_res()[[action]]
       }
@@ -81,14 +77,36 @@ shinyServer(function(input, output, session){
     input$Iapi_call
     isolate({
       validate(need(input$Iapi_call > 0, ""))
-      #message("renderPrintStr")
       str(market_api_res())
     })
   })
   
   ### blockchain api
   
-  ### utils
+  blockchain_api_res <- reactive({
+    validate(need(input$Iblockchain_api_call > 0, ""))
+    isolate({
+      validate(need(nchar(input$Iblockchain_api_x) > 0, ""))
+      x <- input$Iblockchain_api_x
+      invisible(blockchain.api.process(x))
+    })
+  })
+  
+  output$Odt_blockchain_api_res <- renderDataTable({
+    input$Iblockchain_api_call
+    isolate({
+      validate(need(input$Iblockchain_api_call > 0, ""))
+      blockchain_api_res()
+    })
+  }, options = list(pageLength = 5, lengthMenu = c(5,10,15,100)))
+  
+  output$Ostr_blockchain_api_res <- renderPrint({
+    input$Iblockchain_api_call
+    isolate({
+      validate(need(input$Iblockchain_api_call > 0, ""))
+      str(blockchain_api_res())
+    })
+  })
   
   ### options
   

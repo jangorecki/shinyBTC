@@ -1,7 +1,7 @@
 ---
 title: "shinyBTC"
 author: "Jan Gorecki"
-date: '2014-10-06'
+date: '2014-10-08'
 output:
   html_document: default
 ---
@@ -12,21 +12,22 @@ Use it wise, be aware of [MIT](http://opensource.org/licenses/MIT) license on wh
 
 ---
 
-List of available market + currency pairs (can be extended by user by setting options):
-```{r}
-unique(getOption("Rbitcoin.api.dict")[!is.na(base)],
-       by=c("market","base","quote")
-       )[,.(market, currency_pair = paste0(base,quote))]
+Rbitcoin introduction vignette
+```{r, eval=FALSE}
+vignette("introduction", package="Rbitcoin")
 ```
 
-Details of host:
+List of available market + currency pairs (can be extended by user by setting options)
+```{r}
+getOption("Rbitcoin.api.dict")[!is.na(base), .(market, currency_pair = paste0(base,quote))][,unique(.SD)]
+```
 
+Details of host
 ```{r}
 data.table(attribute = names(Sys.info()), value = Sys.info())
 ```
 
-App instance start time:
-
+App instance start time
 ```{r}
 Sys.time()
 ```
