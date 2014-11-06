@@ -9,10 +9,10 @@ GUI for [Rbitcoin](https://github.com/jangorecki/Rbitcoin) package using shiny a
 ```R
 # dependency, install (update) if you miss any:
 install.packages("devtools")
-install.packages("data.table")
+install.packages("data.table") # 1.9.6+
 install.packages("shiny")
 install.packages("rmarkdown")
-devtools::install_github("jangorecki/Rbitcoin")
+install.packages("Rbitcoin") # 0.9.4+
 
 # run shiny app
 shiny::runGitHub("jangorecki/shinyBTC")
@@ -30,4 +30,4 @@ vignette("introduction", package="Rbitcoin")
 
 ## Contact
 
-`j.gorecki@wit.edu.pl`
+`J.Gorecki@wit.edu.pl`
