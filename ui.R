@@ -28,7 +28,7 @@ shinyUI(
                               conditionalPanel("input.Imarket == 'bitstamp' && (input.Iaction == 'place_limit_order' || input.Iaction == 'cancel_order' || input.Iaction == 'open_orders' || input.Iaction == 'wallet')",
                                                textInput("Iapi_client_id", "bitstamp API client id", "")),
                               hr(),
-                              actionButton("Iapi_call", label = "market API process (+plot)")
+                              actionButton("Iapi_call", label = "market API process")
                  ),
                  mainPanel(
                    wellPanel(
@@ -50,11 +50,6 @@ shinyUI(
              fluidPage(
                sidebarLayout(
                  sidebarPanel(width = 3,
-                              #numericInput("IfromtoBTC", "to BTC", value = NA, min = 0, step = 0.0001),
-                              #selectInput("IfromtoBTCcurrency", label = "currency", choices = c("USD"), selected = "USD"),
-                              #actionButton("Iblockchain_fromBTC", label = "from"),
-                              #actionButton("Iblockchain_toBTC", label = "to"),
-                              #hr(),
                               textInput("Iblockchain_api_x", label = "address or tx", value = ""),
                               actionButton("Iblockchain_api_call", label = "blockchain API process")
                  ),
@@ -65,6 +60,30 @@ shinyUI(
                      verbatimTextOutput("Ostr_blockchain_api_res")
                      )
                    )
+               ),
+               wellPanel(
+                 verbatimTextOutput("Oprint_blockchain_api_res")
+               )
+             )),
+    tabPanel("wallet manager",
+             fluidPage(
+               sidebarLayout(
+                 sidebarPanel(width = 2,
+                              selectInput("Iwallet_manager_plot_type", label = "type", choices = c("value","recent"), selected = "value"),
+                              actionButton("Iwallet_manager_plot", label = "plot")
+                 ),
+                 mainPanel(width = 10,
+                   #plotOutput("Oplot_wallet_manager", width = "600px", height="800px"),
+                   plotOutput("Oplot_wallet_manager",  width = "600px", height = "800px")
+#                    wellPanel(
+#                      #plotOutput("Oplot_wallet_manager", width = "600px", height="800px"),
+#                      plotOutput("Oplot_wallet_manager"),
+#                      #dataTableOutput("Odt_wallet_manager"),
+#                      #hr(),
+#                      #plotOutput("Oplot_wallet_manager", height = "100px"),
+#                      hr()
+#                    )
+                 )
                )
              )),
     tabPanel("options",
@@ -76,7 +95,7 @@ shinyUI(
                  ),
                fluidRow(
                  column(2, numericInput("Rbitcoin.antiddos.sec","Rbitcoin antiddos sec:", value = 10, min = 1, max = 60, step = 1)),
-                 column(2, checkboxInput("Rbitcoin.plot.mask","Rbitcoin plot mask:", value = FALSE)) # not yet utilized
+                 column(2, checkboxInput("Rbitcoin.plot.mask","Rbitcoin plot mask", value = FALSE)) # not yet utilized TODO
                ),
                fluidRow(
                  column(2, numericInput("Rbitcoin.plot.limit_pct","Rbitcoin plot order book limit pct:", value = 0.75, min = 0, max = 10, step = 0.01)),

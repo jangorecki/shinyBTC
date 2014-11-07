@@ -1,7 +1,7 @@
 ---
 title: "shinyBTC"
 author: "Jan Gorecki"
-date: '2014-10-08'
+date: '2014-11-07'
 output:
   html_document: default
 ---
@@ -17,7 +17,7 @@ Rbitcoin introduction vignette
 vignette("introduction", package="Rbitcoin")
 ```
 
-List of available market + currency pairs (can be extended by user by setting options)
+List of available market + currency pairs in terms of pre/post processing API interface (dictionary can be extended by user via options). All currency pairs and methods available for supported markets but with no translation.
 ```{r}
 getOption("Rbitcoin.api.dict")[!is.na(base), .(market, currency_pair = paste0(base,quote))][,unique(.SD)]
 ```

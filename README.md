@@ -12,7 +12,7 @@ install.packages("devtools")
 install.packages("data.table") # 1.9.6+
 install.packages("shiny")
 install.packages("rmarkdown")
-install.packages("Rbitcoin") # 0.9.4+
+install.packages("Rbitcoin") # 0.9.4+ # soon
 
 # run shiny app
 shiny::runGitHub("jangorecki/shinyBTC")
