@@ -76,8 +76,7 @@ wallet_manager_dummy_data <- function(){
 }
 
 # wallet_archive_load
-load_wallet_archive <- function(){
-  archive_path <- getOption("Rbitcoin.wallet_manager.archive_path")
+load_wallet_archive <- function(archive_path = getOption("shinyBTC.wallet_manager.archive_path")){
   if(is.null(archive_path)) return(wallet_manager_dummy_data())
   if(file.exists(archive_path)) wallet_manager(archive_write=FALSE, archive_read=TRUE, archive_path=archive_path) else wallet_manager_dummy_data()
 }
@@ -90,4 +89,4 @@ action_order <- c("ticker","trades","order_book","wallet","place_limit_order","o
 split_cp <- function(currency_pair) c(substr(currency_pair,1,3),substr(currency_pair,4,6))
 
 # opts
-options("shinyBTC.trunc.char"=10) # wallet_manager table truncate after N chars
+options("shinyBTC.trunc.char"=10) # wallet_manager location truncate after N chars

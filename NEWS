@@ -1,5 +1,6 @@
 shinyBTC 0.1.1 (in dev)
 ==============
+* wallet_manager tab
 * fix dependencies version
 * market api plot: trades, order_book
 * print results: DataTables, str(), verbose log
