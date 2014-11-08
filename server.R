@@ -123,22 +123,27 @@ shinyServer(function(input, output, session){
   
   ### wallet manager api
   
+  wallet_manager_data <- function(){
+    wallet_dt
+  } # non-reactive fun to provide wallet manager data
+  
   output$Oplot_wallet_manager <- renderPlot({
     input$Iwallet_manager_plot
     isolate({
+      validate(need(input$Iwallet_manager_plot > 0, ""))
       type = input$Iwallet_manager_plot_type
-      rbtc.plot(wallet_dt, type = type, verbose = 0)
+      rbtc.plot(wallet_manager_data(), type = type, verbose = 0)
     })
-  }) # wallet manager plot
+  }, width=400, height=400, units="px") # wallet manager plot
   
-#   output$Odt_wallet_manager <- renderDataTable({
-#     last_wallet_dt <- copy(wallet_dt[value > 0][order(-wallet_id, value_currency, -value)])
-#     # format for table
-#     truncNchar <- getOption("shinyBTC.trunc.char",10)
-#     last_wallet_dt[nchar(location)>truncNchar, location:=paste0(substr(location,1,truncNchar-3),"...")]
-#     # prepare headers
-#     setnames(last_wallet_dt,names(last_wallet_dt), gsub("_"," ",names(last_wallet_dt)))
-#   }, options = list(pageLength = 5, lengthMenu = c(5,10,15,100))) # wallet manager dt
+  output$Odt_wallet_manager <- renderDataTable({
+    last_wallet_dt <- copy(wallet_manager_data()[value > 0][order(-wallet_id, value_currency, -value)])
+    # format for table
+    truncNchar <- getOption("shinyBTC.trunc.char",10)
+    last_wallet_dt[nchar(location)>truncNchar, location:=paste0(substr(location,1,truncNchar-3),"...")]
+    # format headers
+    setnames(last_wallet_dt,names(last_wallet_dt), gsub("_"," ",names(last_wallet_dt)))
+  }, options = list(pageLength = 5, lengthMenu = c(5,10,15,100))) # wallet manager dt
   
   ### options
   
