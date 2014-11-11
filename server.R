@@ -134,7 +134,9 @@ shinyServer(function(input, output, session){
       type = input$Iwallet_manager_plot_type
       rbtc.plot(wallet_manager_data(), type = type, verbose = 0)
     })
-  }, width=400, height=400, units="px") # wallet manager plot
+  }, height = function() {
+    session$clientData$output_Oplot_wallet_manager_width
+  }) # wallet manager plot
   
   output$Odt_wallet_manager <- renderDataTable({
     last_wallet_dt <- copy(wallet_manager_data()[value > 0][order(-wallet_id, value_currency, -value)])

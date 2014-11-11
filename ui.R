@@ -74,12 +74,12 @@ shinyUI(
                  ),
                  mainPanel(width = 10,
                            conditionalPanel("input.Iwallet_manager_plot > 0",
-                                            #p("Image/Legend may not scale well"), # plot size to be adjusted after: https://github.com/rstudio/shiny/issues/650
-                                            plotOutput("Oplot_wallet_manager")),
-                           hr(),
-                           dataTableOutput("Odt_wallet_manager")
+                                            p("Legend may not scale well in shiny App"),
+                                            plotOutput("Oplot_wallet_manager", height="auto"))
                  )
-               )
+               ),
+               hr(),
+               dataTableOutput("Odt_wallet_manager")
              )),
     tabPanel("options",
              fluidPage(
