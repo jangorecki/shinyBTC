@@ -2,17 +2,17 @@
 
 GUI for [Rbitcoin](https://github.com/jangorecki/Rbitcoin) package using shiny app.
 
-**Current version**: 0.1.1
+**Current version**: 0.1.1.9
 
 ## Installation & Usage
 
 ```r
 # dependency, install (update) if you miss any:
 install.packages("devtools")
-install.packages("data.table")
+install.packages("data.table") # 1.9.5+
 install.packages("shiny")
 install.packages("rmarkdown")
-install.packages("Rbitcoin") # 0.9.4+ # soon on CRAN, or latest 0.9.3.9 on github
+install.packages("Rbitcoin") # 0.9.3.9+
 
 # run shiny app
 shiny::runGitHub("jangorecki/shinyBTC")

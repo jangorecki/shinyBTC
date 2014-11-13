@@ -62,12 +62,15 @@ shinyServer(function(input, output, session){
     })
   }) # render plot result
   
-  output$Odt_market_api_res <- renderDataTable({
+  market_api_res_dt <- reactive({
     input$Iapi_call
     isolate({
       validate(need(input$Iapi_call > 0, ""))
       validate(need(!(input$Iaction %in% c("order_book")), ""))
       action <- input$Iaction
+      if(action=="order_book"){
+        data.table()
+      }
       if(action %in% c("trades","wallet","open_orders")){
         market_api_res()[[action]]
       }
@@ -75,7 +78,21 @@ shinyServer(function(input, output, session){
         market_api_res()
       }
     })
+  })
+  
+  output$Odt_market_api_res <- renderDataTable({
+    market_api_res_dt()
   }, options = list(pageLength = 5, lengthMenu = c(5,10,15,100))) # render data table result
+  
+  output$Ocsv_market_api_res <- downloadHandler(
+    filename = function() {
+      paste('data_', as.character(Sys.time(),"%Y%m%d_%H%M%S"), '.csv', sep='')
+    },
+    content = function(file) {
+      write.csv(market_api_res_dt(), file, na = "", row.names=FALSE)
+    },
+    contentType = "text/csv"
+  ) # data table csv
   
   output$Ostr_market_api_res <- renderPrint({
     input$Iapi_call
@@ -137,6 +154,10 @@ shinyServer(function(input, output, session){
   }, height = function() {
     session$clientData$output_Oplot_wallet_manager_width
   }) # wallet manager plot
+  
+  output$Odt_wallet_manager_recent <- renderPrint({
+    wallet_manager_data()[wallet_id==max(wallet_id)][amount>0][order(currency,auth,location_type,location)]
+  }) # wallet manager recent verbatim
   
   output$Odt_wallet_manager <- renderDataTable({
     last_wallet_dt <- copy(wallet_manager_data()[value > 0][order(-wallet_id, value_currency, -value)])

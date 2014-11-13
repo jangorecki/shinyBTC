@@ -28,7 +28,9 @@ shinyUI(
                               conditionalPanel("input.Imarket == 'bitstamp' && (input.Iaction == 'place_limit_order' || input.Iaction == 'cancel_order' || input.Iaction == 'open_orders' || input.Iaction == 'wallet')",
                                                textInput("Iapi_client_id", "bitstamp API client id", "")),
                               hr(),
-                              actionButton("Iapi_call", label = "market API process")
+                              actionButton("Iapi_call", label = "market API process"),
+                              hr(),
+                              downloadButton('Ocsv_market_api_res','data.csv')
                  ),
                  mainPanel(
                    wellPanel(
@@ -73,13 +75,18 @@ shinyUI(
                               actionButton("Iwallet_manager_plot", label = "plot")
                  ),
                  mainPanel(width = 10,
+                           h3("plot"),
                            conditionalPanel("input.Iwallet_manager_plot > 0",
                                             p("Legend may not scale well in shiny App"),
                                             plotOutput("Oplot_wallet_manager", height="auto"))
                  )
                ),
                hr(),
-               dataTableOutput("Odt_wallet_manager")
+               h3("wallet archive"),
+               dataTableOutput("Odt_wallet_manager"),
+               hr(),
+               h3("recent wallet"),
+               verbatimTextOutput("Odt_wallet_manager_recent")
              )),
     tabPanel("options",
              fluidPage(

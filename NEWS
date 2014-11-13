@@ -1,5 +1,6 @@
-shinyBTC 0.1.1 (in dev)
+shinyBTC 0.1.1.9 (in dev)
 ==============
+* csv download
 * wallet_manager tab
 * fix dependencies version
 * market api plot: trades, order_book
