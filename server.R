@@ -156,14 +156,17 @@ shinyServer(function(input, output, session){
   }) # wallet manager plot
   
   output$Odt_wallet_manager_recent <- renderPrint({
-    wallet_manager_data()[wallet_id==max(wallet_id)][amount>0][order(currency,auth,location_type,location)]
+    wallet_manager_data()[wallet_id==max(wallet_id)
+                          ][amount>0
+                            ][order(currency,auth,location_type,location)
+                              ][nchar(location)>getOption("shinyBTC.trunc.char",10), location:=paste0(substr(location,1,getOption("shinyBTC.trunc.char",10)-3),"...")
+                                ][]
   }) # wallet manager recent verbatim
   
   output$Odt_wallet_manager <- renderDataTable({
     last_wallet_dt <- copy(wallet_manager_data()[value > 0][order(-wallet_id, value_currency, -value)])
     # format for table
-    truncNchar <- getOption("shinyBTC.trunc.char",10)
-    last_wallet_dt[nchar(location)>truncNchar, location:=paste0(substr(location,1,truncNchar-3),"...")]
+    last_wallet_dt[nchar(location)>getOption("shinyBTC.trunc.char",10), location:=paste0(substr(location,1,getOption("shinyBTC.trunc.char",10)-3),"...")]
     # format headers
     setnames(last_wallet_dt,names(last_wallet_dt), gsub("_"," ",names(last_wallet_dt)))
   }, options = list(pageLength = 5, lengthMenu = c(5,10,15,100))) # wallet manager dt
